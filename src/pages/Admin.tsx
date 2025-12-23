@@ -391,25 +391,64 @@ export default function Admin() {
   };
 
   const printAllQR = () => {
-    const printContent = Array.from({ length: settings.tableCount }, (_, i) => i + 1)
+    // WiFi QR Code (WIFI:T:WPA;S:SSID;P:PASSWORD;;)
+    const wifiQRData = settings.wifiSSID 
+      ? `WIFI:T:WPA;S:${settings.wifiSSID};P:${settings.wifiPassword};;`
+      : '';
+    
+    const wifiSection = settings.wifiSSID ? `
+      <div style="page-break-after: always; text-align: center; padding: 40px;">
+        <h1 style="margin: 0 0 10px; font-size: 28px; font-family: Georgia, serif;">📶 Free WiFi</h1>
+        <p style="margin: 0 0 20px; font-size: 16px; color: #666;">${settings.restaurantName}</p>
+        <div style="display: inline-block; padding: 20px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(wifiQRData)}" style="display: block;" />
+        </div>
+        <p style="margin: 20px 0 5px; font-size: 14px;"><strong>Network:</strong> ${settings.wifiSSID}</p>
+        <p style="margin: 0; font-size: 14px;"><strong>Password:</strong> ${settings.wifiPassword}</p>
+        <p style="margin: 20px 0 0; font-size: 12px; color: #999;">Scan to connect automatically</p>
+      </div>
+    ` : '';
+    
+    // Table QR codes
+    const tableQRs = Array.from({ length: settings.tableCount }, (_, i) => i + 1)
       .map(num => `
-        <div style="page-break-inside: avoid; text-align: center; padding: 20px; border: 1px solid #ddd; margin: 10px;">
-          <h2 style="margin: 0 0 10px;">Table ${num}</h2>
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${settings.baseUrl || window.location.origin}/table/${num}`)}" />
-          <p style="margin: 10px 0 0; font-size: 12px;">${settings.restaurantName}</p>
+        <div style="page-break-inside: avoid; text-align: center; padding: 15px; border: 1px solid #eee; border-radius: 12px; background: #fafafa; width: 180px; margin: 8px;">
+          <h3 style="margin: 0 0 8px; font-size: 16px;">Table ${num}</h3>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(`${settings.baseUrl || window.location.origin}/table/${num}`)}" style="display: block; margin: 0 auto;" />
+          <p style="margin: 8px 0 0; font-size: 11px; color: #666;">${settings.restaurantName}</p>
         </div>
       `).join('');
     
     const printWindow = window.open('', '_blank');
     if (printWindow) {
       printWindow.document.write(`
-        <html><head><title>QR Codes - ${settings.restaurantName}</title></head>
-        <body style="display: flex; flex-wrap: wrap; justify-content: center;">
-          ${printContent}
-        </body></html>
+        <html>
+        <head>
+          <title>QR Codes - ${settings.restaurantName}</title>
+          <style>
+            * { box-sizing: border-box; }
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; }
+            .tables-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+            @media print { body { padding: 10px; } }
+          </style>
+        </head>
+        <body>
+          ${wifiSection}
+          <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="margin: 0 0 5px; font-size: 22px;">Table QR Codes</h2>
+            <p style="margin: 0; color: #666; font-size: 14px;">Scan to order from your table</p>
+          </div>
+          <div class="tables-grid">
+            ${tableQRs}
+          </div>
+        </body>
+        </html>
       `);
       printWindow.document.close();
-      printWindow.print();
+      // Wait for images to load before printing
+      setTimeout(() => {
+        printWindow.print();
+      }, 1000);
     }
   };
 
@@ -1015,6 +1054,46 @@ export default function Admin() {
               <div>
                 <label className="text-sm font-medium">WiFi Password</label>
                 <Input value={settings.wifiPassword} onChange={e => updateSettings({ wifiPassword: e.target.value })} />
+              </div>
+              
+              {/* Social Media Links Section */}
+              <div className="pt-6 border-t border-border mt-6">
+                <h3 className="text-lg font-semibold mb-4">Social Media Links</h3>
+                <p className="text-sm text-muted-foreground mb-4">Add your social media links. Only links that are filled will be shown to customers.</p>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Instagram URL</label>
+                    <Input 
+                      value={settings.instagramUrl || ''} 
+                      onChange={e => updateSettings({ instagramUrl: e.target.value })} 
+                      placeholder="https://instagram.com/yourhandle"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Facebook URL</label>
+                    <Input 
+                      value={settings.facebookUrl || ''} 
+                      onChange={e => updateSettings({ facebookUrl: e.target.value })} 
+                      placeholder="https://facebook.com/yourpage"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">TikTok URL</label>
+                    <Input 
+                      value={settings.tiktokUrl || ''} 
+                      onChange={e => updateSettings({ tiktokUrl: e.target.value })} 
+                      placeholder="https://tiktok.com/@yourhandle"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Google Review URL</label>
+                    <Input 
+                      value={settings.googleReviewUrl || ''} 
+                      onChange={e => updateSettings({ googleReviewUrl: e.target.value })} 
+                      placeholder="https://g.page/r/your-review-link"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

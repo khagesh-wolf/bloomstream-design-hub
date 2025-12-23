@@ -80,6 +80,11 @@ export interface Settings {
   wifiSSID: string;
   wifiPassword: string;
   baseUrl: string;
+  // Social media links
+  instagramUrl?: string;
+  facebookUrl?: string;
+  tiktokUrl?: string;
+  googleReviewUrl?: string;
 }
 
 export interface DashboardStats {
