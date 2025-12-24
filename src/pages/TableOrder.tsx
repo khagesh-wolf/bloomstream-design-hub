@@ -145,7 +145,7 @@ export default function TableOrder() {
   
   const filteredItems = activeCategory === 'Favorites' 
     ? favoriteItems
-    : menuItems.filter(item => item.category === activeCategory && item.available);
+    : menuItems.filter(item => item.category === activeCategory);
 
   // Calculate estimated wait time for current cart
   const estimatedWait = cart.length > 0 
@@ -586,7 +586,7 @@ export default function TableOrder() {
         {/* Regular Categories */}
         {categoryNames.filter(c => c !== 'Favorites').map(cat => {
           if (activeCategory === 'Favorites') return null;
-          const items = menuItems.filter(item => item.category === cat && item.available);
+          const items = menuItems.filter(item => item.category === cat);
           if (items.length === 0) return null;
           
           return (
@@ -596,7 +596,7 @@ export default function TableOrder() {
                 const qty = getItemQty(item.id);
                 const isFav = isFavorite(item.id);
                 return (
-                  <div key={item.id} className="flex justify-between border-b border-[#eee] pb-4 mb-5">
+                  <div key={item.id} className={`flex justify-between border-b border-[#eee] pb-4 mb-5 ${!item.available ? 'opacity-60' : ''}`}>
                     <div className="flex-1 pr-4">
                       <div className="flex items-center gap-2">
                         <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
@@ -612,9 +612,13 @@ export default function TableOrder() {
                         <p className="text-xs text-[#888] mt-1 line-clamp-2">{item.description}</p>
                       )}
                       
-                      {/* Inline Quantity Control */}
+                      {/* Inline Quantity Control or Unavailable */}
                       <div className="mt-3">
-                        {qty === 0 ? (
+                        {!item.available ? (
+                          <span className="inline-block bg-gray-200 text-gray-500 font-medium px-4 py-1.5 rounded-full text-sm">
+                            Unavailable
+                          </span>
+                        ) : qty === 0 ? (
                           <button
                             onClick={() => addToCart(item)}
                             className="bg-white border border-[#ddd] text-[#06C167] font-bold px-5 py-1.5 rounded-full shadow-sm hover:shadow-md transition-shadow"
@@ -640,7 +644,7 @@ export default function TableOrder() {
                         )}
                       </div>
                     </div>
-                    <div className="w-[100px] h-[100px] rounded-xl bg-[#eee] overflow-hidden flex-shrink-0">
+                    <div className={`w-[100px] h-[100px] rounded-xl bg-[#eee] overflow-hidden flex-shrink-0 ${!item.available ? 'grayscale' : ''}`}>
                       {item.image ? (
                         <img 
                           src={item.image}
