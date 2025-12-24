@@ -1066,9 +1066,9 @@ export default function Counter() {
           )}
         </div>
 
-        {/* Action Bar */}
+        {/* Action Bar - Desktop: below sidebar on left, Mobile: bottom right */}
         {selectedPhones.length > 0 && (
-          <div className="fixed bottom-5 right-5 bg-[#222] text-white px-8 py-4 rounded-full flex items-center gap-5 shadow-lg z-50 animate-slide-up">
+          <div className="fixed bottom-5 left-5 lg:left-[360px] right-auto lg:right-auto bg-[#222] text-white px-8 py-4 rounded-full flex items-center gap-5 shadow-lg z-50 animate-slide-up">
             <div><span className="font-bold">{selectedPhones.length}</span> bills selected</div>
             <Button className="bg-[#27ae60] hover:bg-[#27ae60]/90" onClick={openPaymentModal}>
               Pay & Clear
