@@ -14,11 +14,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:flex group-[.toaster]:items-center group-[.toaster]:justify-between group-[.toaster]:gap-2",
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:relative group-[.toaster]:pr-12",
           description: "group-[.toast]:text-muted-foreground",
           actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
-          closeButton: "group-[.toaster]:!relative group-[.toaster]:!right-0 group-[.toaster]:!top-0 group-[.toaster]:!left-auto group-[.toaster]:!transform-none group-[.toaster]:!bg-transparent group-[.toaster]:!border-0 group-[.toaster]:!text-foreground/50 group-[.toaster]:hover:!text-foreground group-[.toaster]:hover:!bg-muted/50 group-[.toaster]:!rounded-md group-[.toaster]:!p-1 group-[.toaster]:!h-6 group-[.toaster]:!w-6 group-[.toaster]:!flex-shrink-0",
+          closeButton:
+            "group-[.toaster]:!absolute group-[.toaster]:!right-3 group-[.toaster]:!top-1/2 group-[.toaster]:!-translate-y-1/2 group-[.toaster]:!bg-muted/40 group-[.toaster]:hover:!bg-muted/70 group-[.toaster]:!text-foreground/70 group-[.toaster]:hover:!text-foreground group-[.toaster]:!border-0 group-[.toaster]:!rounded-md group-[.toaster]:!p-1 group-[.toaster]:!h-7 group-[.toaster]:!w-7",
         },
       }}
       {...props}
