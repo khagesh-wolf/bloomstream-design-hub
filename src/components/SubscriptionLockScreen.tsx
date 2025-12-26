@@ -44,7 +44,7 @@ export function SubscriptionLockScreen({ status, onRefresh, isRefreshing }: Subs
 
             <div className="flex flex-col gap-2">
               <a
-                href="tel:+9779800000000"
+                href="tel:+9779818839865"
                 className="flex items-center justify-center gap-2 p-3 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
               >
                 <Phone className="w-4 h-4 text-primary" />
@@ -52,7 +52,7 @@ export function SubscriptionLockScreen({ status, onRefresh, isRefreshing }: Subs
               </a>
 
               <a
-                href="mailto:support@example.com"
+                href="mailto:mail@khagesh.com.np"
                 className="flex items-center justify-center gap-2 p-3 bg-primary/10 hover:bg-primary/20 rounded-lg transition-colors"
               >
                 <Mail className="w-4 h-4 text-primary" />
