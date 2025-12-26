@@ -38,17 +38,16 @@ export async function uploadToR2(
       folder = 'menu'
     } = options;
 
-    // Compress image if enabled
+    // Compress and convert to WebP
     let uploadFile: File | Blob = file;
     if (compress && file.type.startsWith('image/')) {
       uploadFile = await compressImage(file, maxWidth, maxHeight, quality);
     }
 
-    // Generate unique filename
+    // Generate unique filename (always .webp since we convert)
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substring(2, 8);
-    const extension = file.name.split('.').pop() || 'webp';
-    const filename = `${folder}/${timestamp}-${randomId}.${extension}`;
+    const filename = `${folder}/${timestamp}-${randomId}.webp`;
 
     // Create form data
     const formData = new FormData();
